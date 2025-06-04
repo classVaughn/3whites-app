@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">3Whites</string>
+    <string name="logo_description">Logo</string>
+    <string name="get_started">GET STARTED</string>
+    <string name="register">Register</string>
+    <string name="existing_user">Existing User?</string>
+    <string name="new_user">New User?</string>
+    <string name="log_in">Log In</string>
+</resources>
