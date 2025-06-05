@@ -8,8 +8,8 @@ const JWT_SECRET = process.env.JWT_SECRET || "defaultsecret";
 
 // Helper function for email validation
 function isValidEmail(email) {
-  // Simple regex for demonstration; you can use a stricter one if needed
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  // Allow .com, .net, .org, .edu, .gov, .io, .co, .us, .uk, .ca, .au, .info, .biz, .xyz, etc.
+  return /^[^\s@]+@[^\s@]+\.(com|net|org|edu|gov|io|co|us|uk|ca|au|info|biz|xyz)$/i.test(email);
 }
 
 // Register

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="#BDC3C7"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/how_many_days_per_week"
+        android:textColor="#1E2D3D"
+        android:textSize="30sp"
+        android:fontFamily="@font/roboto_font"
+        android:layout_marginBottom="24dp"
+        android:textStyle="bold" />
+
+    <Button
+        android:layout_width="220dp"
+        android:id="@+id/button3"
+        android:layout_height="60dp"
+        android:text="@string/three_days"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/rounded_button"
+        android:fontFamily="@font/roboto_font"
+        android:textSize="22sp"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:layout_width="220dp"
+        android:id="@+id/button4"
+        android:layout_height="60dp"
+        android:text="@string/four_days"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/rounded_button"
+        android:fontFamily="@font/roboto_font"
+        android:textSize="22sp"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:layout_width="220dp"
+        android:id="@+id/button5"
+        android:layout_height="60dp"
+        android:text="@string/five_days"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/rounded_button"
+        android:fontFamily="@font/roboto_font"
+        android:textSize="22sp"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:layout_width="220dp"
+        android:id="@+id/button6"
+        android:layout_height="60dp"
+        android:text="@string/six_days"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/rounded_button"
+        android:fontFamily="@font/roboto_font"
+        android:textSize="22sp"
+        android:layout_marginBottom="20dp" />
+
+    <Button
+        android:layout_width="150dp"
+        android:id="@+id/buttonContinue"
+        android:layout_height="48dp"
+        android:text="@string/btn_continue"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#C0392B"
+        android:background="@drawable/rounded_button"
+        android:fontFamily="@font/roboto_font"
+        android:textSize="18sp"
+        android:layout_marginTop="15dp" />
+
+</LinearLayout>

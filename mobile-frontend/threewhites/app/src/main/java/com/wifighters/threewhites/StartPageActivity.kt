@@ -1,4 +1,4 @@
-package com.example.loginapplication
+package com.wifighters.threewhites
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,9 +12,8 @@ class StartPageActivity : AppCompatActivity() {
 
         val btnGetStarted = findViewById<Button>(R.id.btnGetStarted)
         btnGetStarted.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
-            finish()
         }
     }
 }

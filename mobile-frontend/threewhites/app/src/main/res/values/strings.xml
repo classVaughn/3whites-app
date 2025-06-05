@@ -6,4 +6,15 @@
     <string name="existing_user">Existing User?</string>
     <string name="new_user">New User?</string>
     <string name="log_in">Log In</string>
+    <string name="how_would_you_10_describe_your_10_powerlifting_10_experience">HOW WOULD YOU\nDESCRIBE YOUR\nPOWERLIFTING\nEXPERIENCE?</string>
+    <string name="beginner">BEGINNER</string>
+    <string name="novice">NOVICE</string>
+    <string name="intermediate">INTERMEDIATE</string>
+    <string name="btn_continue">CONTINUE</string>
+    <string name="login">Login</string>
+    <string name="how_many_days_per_week">HOW MANY DAYS PER WEEK DO YOU WANT TO TRAIN?</string>
+    <string name="three_days">3 DAYS</string>
+    <string name="four_days">4 DAYS</string>
+    <string name="five_days">5 DAYS</string>
+    <string name="six_days">6 DAYS</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.loginapplication
+package com.wifighters.threewhites
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,21 +10,20 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.URL
 
-class RegisterActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.registerpage)
+        setContentView(R.layout.loginpage)
 
         val emailInput = findViewById<EditText>(R.id.emailInput)
         val passwordInput = findViewById<EditText>(R.id.passwordInput)
-        val registerButton = findViewById<Button>(R.id.registerButton)
-        val loginLink = findViewById<TextView>(R.id.loginLink)
+        val continueButton = findViewById<Button>(R.id.continueButton)
+        val registerLink = findViewById<TextView>(R.id.registerLink)
 
-        registerButton.setOnClickListener {
+        continueButton.setOnClickListener {
             val email = emailInput.text.toString()
             val password = passwordInput.text.toString()
 
@@ -33,7 +32,7 @@ class RegisterActivity : AppCompatActivity() {
             } else {
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
-                        val url = URL("http://10.0.2.2:3000/api/auth/register")
+                        val url = URL("http://10.0.2.2:3000/api/auth/login")
                         val conn = url.openConnection() as HttpURLConnection
                         conn.requestMethod = "POST"
                         conn.setRequestProperty("Content-Type", "application/json")
@@ -44,35 +43,35 @@ class RegisterActivity : AppCompatActivity() {
                             os.write(jsonInputString.toByteArray(Charsets.UTF_8))
                         }
                         val responseCode = conn.responseCode
-                        val errorMsg = if (responseCode != 201) conn.errorStream?.bufferedReader()?.readText() else null
-                        conn.disconnect()
                         runOnUiThread {
-                            if (responseCode == 201) {
-                                Toast.makeText(this@RegisterActivity, "Registration successful!", Toast.LENGTH_SHORT).show()
-                                val intent = Intent(this@RegisterActivity, MainActivity::class.java)
+                            if (responseCode == 200) {
+                                Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_SHORT).show()
+                                val intent = Intent(this@LoginActivity, ExperienceActivity::class.java)
                                 startActivity(intent)
                                 finish()
                             } else {
+                                val errorMsg = conn.errorStream?.bufferedReader()?.readText()
                                 val userMessage = try {
                                     val json = org.json.JSONObject(errorMsg ?: "")
                                     json.optString("message", errorMsg)
                                 } catch (e: Exception) {
                                     errorMsg
                                 }
-                                Toast.makeText(this@RegisterActivity, "Registration failed: $userMessage", Toast.LENGTH_LONG).show()
+                                Toast.makeText(this@LoginActivity, "Login failed: $userMessage", Toast.LENGTH_LONG).show()
                             }
                         }
+                        conn.disconnect()
                     } catch (e: Exception) {
                         runOnUiThread {
-                            Toast.makeText(this@RegisterActivity, "Network error: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@LoginActivity, "Network error: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
                         }
                     }
                 }
             }
         }
 
-        loginLink.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
+        registerLink.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
             finish()
         }

@@ -17,7 +17,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         tools:targetApi="31">
         <activity
-            android:name=".StartPageActivity"
+            android:name="com.wifighters.threewhites.StartPageActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.LogInApplication">
@@ -27,12 +27,37 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.wifighters.threewhites.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.LogInApplication" />
         <activity
-            android:name=".RegisterActivity"
+            android:name="com.wifighters.threewhites.RegisterActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.LogInApplication" />
+        <activity
+            android:name="com.wifighters.threewhites.ExperienceActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.LogInApplication" />
+        <activity
+            android:name="com.wifighters.threewhites.TrainingDaysActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.LogInApplication" />
+        <activity
+            android:name="com.wifighters.threewhites.UnitsSelectionActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.LogInApplication" />
+        <activity
+            android:name="com.wifighters.threewhites.RecommendedProgramsActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.LogInApplication" />
+        <activity
+            android:name="com.wifighters.threewhites.LoginActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.LogInApplication" />
