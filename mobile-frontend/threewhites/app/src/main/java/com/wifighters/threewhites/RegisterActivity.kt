@@ -7,17 +7,20 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.wifighters.threewhites.utils.FirebaseAuthHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.net.HttpURLConnection
-import java.net.URL
-import com.wifighters.threewhites.LoginActivity
 
 class RegisterActivity : AppCompatActivity() {
+    private lateinit var firebaseAuthHelper: FirebaseAuthHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.registerpage)
+
+        firebaseAuthHelper = FirebaseAuthHelper()
 
         val emailInput = findViewById<EditText>(R.id.emailInput)
         val passwordInput = findViewById<EditText>(R.id.passwordInput)
@@ -33,38 +36,31 @@ class RegisterActivity : AppCompatActivity() {
             } else {
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
-                        val url = URL("http://10.0.2.2:3000/api/auth/register")
-                        val conn = url.openConnection() as HttpURLConnection
-                        conn.requestMethod = "POST"
-                        conn.setRequestProperty("Content-Type", "application/json")
-                        conn.setRequestProperty("Accept", "application/json")
-                        conn.doOutput = true
-                        val jsonInputString = "{\"email\":\"$email\",\"password\":\"$password\"}"
-                        conn.outputStream.use { os ->
-                            os.write(jsonInputString.toByteArray(Charsets.UTF_8))
-                        }
-                        val responseCode = conn.responseCode
-                        val errorMsg = if (responseCode != 201) conn.errorStream?.bufferedReader()?.readText() else null
-                        conn.disconnect()
+                        val result = firebaseAuthHelper.registerUser(email, password)
                         runOnUiThread {
-                            if (responseCode == 201) {
-                                Toast.makeText(this@RegisterActivity, "Registration successful!", Toast.LENGTH_SHORT).show()
-                                val intent = Intent(this@RegisterActivity, LoginActivity::class.java)
-                                startActivity(intent)
-                                finish()
-                            } else {
-                                val userMessage = try {
-                                    val json = org.json.JSONObject(errorMsg ?: "")
-                                    json.optString("message", errorMsg)
-                                } catch (e: Exception) {
-                                    errorMsg
+                            result.fold(
+                                onSuccess = {
+                                    Toast.makeText(
+                                        this@RegisterActivity,
+                                        "Account created successfully! Now let's set up your preferences.",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    // Add a small delay to ensure the Toast is visible
+                                    CoroutineScope(Dispatchers.Main).launch {
+                                        delay(1500) // 1.5 second delay for longer message
+                                        val intent = Intent(this@RegisterActivity, ExperienceActivity::class.java)
+                                        startActivity(intent)
+                                        finish()
+                                    }
+                                },
+                                onFailure = { exception ->
+                                    Toast.makeText(this@RegisterActivity, "Registration failed: ${exception.message}", Toast.LENGTH_LONG).show()
                                 }
-                                Toast.makeText(this@RegisterActivity, "Registration failed: $userMessage", Toast.LENGTH_LONG).show()
-                            }
+                            )
                         }
                     } catch (e: Exception) {
                         runOnUiThread {
-                            Toast.makeText(this@RegisterActivity, "Network error: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@RegisterActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
                         }
                     }
                 }

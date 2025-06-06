@@ -22,12 +22,8 @@
             android:id="@+id/logoImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/rounded_corners"
-            android:clipToOutline="true"
             android:contentDescription="@string/logo_description"
-            android:scaleType="centerCrop"
-            android:src="@drawable/whiteslogo"
-            tools:targetApi="31" />
+            android:src="@drawable/whiteslogo" />
     </FrameLayout>
 
     <View

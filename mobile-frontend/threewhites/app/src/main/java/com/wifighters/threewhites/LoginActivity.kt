@@ -7,21 +7,30 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.wifighters.threewhites.utils.FirebaseAuthHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.net.HttpURLConnection
-import java.net.URL
 
 class LoginActivity : AppCompatActivity() {
+    private lateinit var firebaseAuthHelper: FirebaseAuthHelper
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.loginpage)
+
+        firebaseAuthHelper = FirebaseAuthHelper()
 
         val emailInput = findViewById<EditText>(R.id.emailInput)
         val passwordInput = findViewById<EditText>(R.id.passwordInput)
         val continueButton = findViewById<Button>(R.id.continueButton)
         val registerLink = findViewById<TextView>(R.id.registerLink)
+
+        // Check if user is already logged in
+        if (firebaseAuthHelper.getCurrentUser() != null) {
+            navigateToExperience()
+            return
+        }
 
         continueButton.setOnClickListener {
             val email = emailInput.text.toString()
@@ -32,38 +41,21 @@ class LoginActivity : AppCompatActivity() {
             } else {
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
-                        val url = URL("http://10.0.2.2:3000/api/auth/login")
-                        val conn = url.openConnection() as HttpURLConnection
-                        conn.requestMethod = "POST"
-                        conn.setRequestProperty("Content-Type", "application/json")
-                        conn.setRequestProperty("Accept", "application/json")
-                        conn.doOutput = true
-                        val jsonInputString = "{\"email\":\"$email\",\"password\":\"$password\"}"
-                        conn.outputStream.use { os ->
-                            os.write(jsonInputString.toByteArray(Charsets.UTF_8))
-                        }
-                        val responseCode = conn.responseCode
+                        val result = firebaseAuthHelper.loginUser(email, password)
                         runOnUiThread {
-                            if (responseCode == 200) {
-                                Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_SHORT).show()
-                                val intent = Intent(this@LoginActivity, ExperienceActivity::class.java)
-                                startActivity(intent)
-                                finish()
-                            } else {
-                                val errorMsg = conn.errorStream?.bufferedReader()?.readText()
-                                val userMessage = try {
-                                    val json = org.json.JSONObject(errorMsg ?: "")
-                                    json.optString("message", errorMsg)
-                                } catch (e: Exception) {
-                                    errorMsg
+                            result.fold(
+                                onSuccess = {
+                                    Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_SHORT).show()
+                                    navigateToExperience()
+                                },
+                                onFailure = { exception ->
+                                    Toast.makeText(this@LoginActivity, "Login failed: ${exception.message}", Toast.LENGTH_LONG).show()
                                 }
-                                Toast.makeText(this@LoginActivity, "Login failed: $userMessage", Toast.LENGTH_LONG).show()
-                            }
+                            )
                         }
-                        conn.disconnect()
                     } catch (e: Exception) {
                         runOnUiThread {
-                            Toast.makeText(this@LoginActivity, "Network error: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this@LoginActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
                         }
                     }
                 }
@@ -75,5 +67,11 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+    }
+
+    private fun navigateToExperience() {
+        val intent = Intent(this@LoginActivity, ExperienceActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 }

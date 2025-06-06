@@ -5,4 +5,5 @@
     <color name="text_black">#000000</color>
     <color name="button_red">#C0392B</color>
     <color name="text_white">#FFFFFF</color>
+    <color name="transparent">#00000000</color>
 </resources>
